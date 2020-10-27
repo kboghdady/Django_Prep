@@ -45,7 +45,6 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
  """
 urls_import = """from django.conf import settings\nfrom django.conf.urls.static import static """
 
-first_view = """def home(request):\n  return render(request,'rooms/home.html')"""
 
 
 addALine("{}".format(urls_path),addStaticLines,"]")
@@ -59,16 +58,19 @@ addALine("{}".format(settings_path),"STATIC_ROOT = os.path.join(BASE_DIR,'static
 
 
 
-
+index = 0
 for app in apps:
   print(app)
+  if index == 0:
+    addALine("{}".format(urls_path),"    path('', {}.views.home , name='home')".format(app),"    path('admin/', admin.site.urls),")
   app_path = os.path.join(PATH,app)
   app_view_path = os.path.join(app_path, "views.py")
   admin_path = os.path.join(app_path,"admin.py")
 
   os.system("django-admin startapp {}".format(app))
+  first_view = """def home(request):\n  return render(request,'{}/home.html')""".format(app)
   addALine("{}".format(urls_path),"import {}.views".format(app),"from django.urls import path")
-  addALine("{}".format(settings_path),"'{}',".format(app),"'django.contrib.staticfiles',")
+  addALine("{}".format(settings_path),"    '{}',".format(app),"    'django.contrib.staticfiles',")
 
 
   #views.py
@@ -86,5 +88,7 @@ for app in apps:
   os.mkdir("{}/static".format(app_path))
   os.mkdir("{}/templates/{}".format(app_path,app))
   home_file = open("{}/templates/{}/home.html".format(app_path,app),"w+" )
-  home_file.write("{\% load static \%}")
+  home_file.write("{% load static %}")
+  home_file.write("<H1>HOME</H1>")
   home_file.close()
+  index +=1
