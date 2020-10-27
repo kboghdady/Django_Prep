@@ -9,7 +9,7 @@ from pathlib import Path
 apps = sys.argv
 apps.pop(0)  # remove the python file name
 project_name = apps.pop(0)
-print("Project name: {}".fortmat(project_name))
+print("Project name: {}".format(project_name))
 print("all apps: {}".format(apps))
 os.system("django-admin startproject {}".format(project_name))
 os.chdir("{}".format(project_name))
