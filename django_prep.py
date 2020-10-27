@@ -45,8 +45,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
  """
 urls_import = """from django.conf import settings\nfrom django.conf.urls.static import static """
 
-first_view = """def home(request):\n
- \treturn render(request,'rooms/home.html')"""
+first_view = """def home(request):\n  return render(request,'rooms/home.html')"""
 
 
 addALine("{}".format(urls_path),addStaticLines,"]")
